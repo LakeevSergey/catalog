@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  title: 'Catalog'
+  version: '0.1'
+paths:
+  /user/register/:
+    post:
+      tags:
+        - user
+      operationId: user_register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDto'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                Success:
+                  summary: 'Registration success'
+                  value: { status: 201, data: { id: 123, name: test, login: test, email: test, roles: [ROLE_USER] } }
+      security: []
+components:
+  schemas:
+    RegisterDto:
+      title: 'Register form'
+      properties:
+        name:
+          type: string
+        login:
+          type: string
+        password:
+          type: string
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      bearerFormat: JWT
+      scheme: bearer
+security:
+  -
+    bearerAuth: []
+tags:
+  -
+    name: user
+    description: 'User methods'
