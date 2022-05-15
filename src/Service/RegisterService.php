@@ -4,18 +4,18 @@ namespace App\Service;
 
 use App\Entity\Dto\RegisterDto;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegisterService
 {
-    private EntityManagerInterface $entityManager;
+    private UserRepository $repository;
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(UserRepository $repository, UserPasswordHasherInterface $passwordHasher)
     {
-        $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
+        $this->repository = $repository;
     }
 
     public function register(RegisterDto $registerDto)
@@ -24,8 +24,7 @@ class RegisterService
 
         $passwordHash = $this->passwordHasher->hashPassword($user, $registerDto->getPassword());
         $user->setPassword($passwordHash);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->repository->add($user);
 
         return $user;
     }
