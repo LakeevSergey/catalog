@@ -45,6 +45,26 @@ paths:
                   summary: 'Registration success'
                   value: { status: 201, data: { id: 123, name: test, login: test, email: test, roles: [ROLE_USER] } }
       security: []
+  /category/create/:
+    post:
+      tags:
+        - user
+      operationId: category_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                Success:
+                  summary: 'Create category success'
+                  value: { status: 201, data: { id: 123, name: test} }
 components:
   schemas:
     LoginDto:
@@ -64,6 +84,12 @@ components:
         login:
           type: string
         password:
+          type: string
+      type: object
+    CreateCategoryDto:
+      title: 'Create category form'
+      properties:
+        name:
           type: string
       type: object
   securitySchemes:

@@ -24,7 +24,7 @@ class RegisterService
 
         $passwordHash = $this->passwordHasher->hashPassword($user, $registerDto->getPassword());
         $user->setPassword($passwordHash);
-        $this->repository->add($user);
+        $this->repository->add($user, true);
 
         return $user;
     }
