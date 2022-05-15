@@ -87,6 +87,38 @@ paths:
                 Success:
                   summary: 'Get category success'
                   value: { status: 200, data: { id: 123, name: test} }
+  /product/create/:
+    post:
+      tags:
+        - product
+      operationId: product_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductDto'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                Success:
+                  summary: 'Create category success'
+                  value: {
+                    status: 201,
+                    data: { id: 123,
+                      name: test,
+                      category: {
+                        id: 123,
+                        name: test
+                      },
+                      sku: test,
+                      price: 123.12,
+                      quantity: 123
+                    }
+                  }
 components:
   schemas:
     LoginDto:
@@ -114,6 +146,20 @@ components:
         name:
           type: string
       type: object
+    CreateProductDto:
+      title: 'Create product form'
+      properties:
+        name:
+          type: string
+        categoryId:
+          type: integer
+        sku:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+      type: object
   securitySchemes:
     bearerAuth:
       type: http
@@ -129,3 +175,6 @@ tags:
   -
     name: category
     description: 'Category methods'
+  -
+    name: product
+    description: 'Product methods'

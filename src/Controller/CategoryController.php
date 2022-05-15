@@ -35,7 +35,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}/', name: 'category_get', methods: 'GET')]
-    public function get(int $id)
+    public function get(int $id): Response
     {
         $category = $this->categoryService->get($id);
         $json = $this->serializer->serialize(['status' => 200, 'data' => $category], 'json');
