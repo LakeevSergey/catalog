@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Dto\CreateProductDto;
+use App\Entity\Dto\EditProductDto;
 use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +30,17 @@ class ProductController extends AbstractController
     {
         $createProductDto = $this->serializer->deserialize($request->getContent(), CreateProductDto::class, JsonEncoder::FORMAT);
         $product = $this->productService->create($createProductDto);
+        $json = $this->serializer->serialize(['status' => 201, 'data' => $product], 'json');
+
+        return new JsonResponse($json, 201, [], true);
+    }
+
+    #[Route('/{id}/edit/', name: 'product_create', methods: 'POST')]
+    public function edit(Request $request, int $id): Response
+    {
+        $editProductDto = $this->serializer->deserialize($request->getContent(), EditProductDto::class, JsonEncoder::FORMAT);
+        $editProductDto->setId($id);
+        $product = $this->productService->edit($editProductDto);
         $json = $this->serializer->serialize(['status' => 201, 'data' => $product], 'json');
 
         return new JsonResponse($json, 201, [], true);

@@ -31,6 +31,11 @@ class Product
 
     public function __construct(string $name, Category $category, string $sku, float $price, int $quantity)
     {
+        $this->edit($name, $category, $sku, $price, $quantity);
+    }
+
+    public function edit(string $name, Category $category, string $sku, float $price, int $quantity)
+    {
         $this->name = $name;
         $this->category = $category;
         $this->sku = $sku;

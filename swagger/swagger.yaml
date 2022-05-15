@@ -18,12 +18,12 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {  }
+              schema: { }
               examples:
                 Success:
                   summary: 'Login success'
                   value: { status: 201, data: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIyMDgxMjYsImV4cCI6MTY1MjIxMTcyNiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJsb2dpbiI6ImFkbWluIn0.CJKBvnHLnovGSpZANpLwdb7kGl4NNPzR7cmfKzv-r7iNCCF2UOstcTTbLaVKe9MfPStk3kj7EClw7D4XGfxbZl58hNjB-DdKNv04s8PfGlEVlcRCAbvgss2Va0gF03fCHGoEvCfUgQqAdyUr1b0zII9ineTzSspbKxmbU2HTCVHgQGwUplVm3z39IZBNRpKGQe1ab1P_A140U4We8UfVid_pMQ3KilGg0VEF80gidzkvD23MgBdAB6O3RbE-w_styQneQRUPzOrNTjtd_42vZpTewwoUivFSboy1geOcDpxSfUYBdW0YZqXCsoVQbA9u_afJyacjSoIC0-0kZyVNVQ }
-      security: []
+      security: [ ]
   /user/register/:
     post:
       tags:
@@ -39,12 +39,12 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {  }
+              schema: { }
               examples:
                 Success:
                   summary: 'Registration success'
-                  value: { status: 201, data: { id: 123, name: test, login: test, email: test, roles: [ROLE_USER] } }
-      security: []
+                  value: { status: 201, data: { id: 123, name: test, login: test, email: test, roles: [ ROLE_USER ] } }
+      security: [ ]
   /category/create/:
     post:
       tags:
@@ -60,11 +60,11 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {  }
+              schema: { }
               examples:
                 Success:
                   summary: 'Create category success'
-                  value: { status: 201, data: { id: 123, name: test} }
+                  value: { status: 201, data: { id: 123, name: test } }
   /category/{id}/:
     get:
       tags:
@@ -82,11 +82,11 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {  }
+              schema: { }
               examples:
                 Success:
                   summary: 'Get category success'
-                  value: { status: 200, data: { id: 123, name: test} }
+                  value: { status: 200, data: { id: 123, name: test } }
   /product/create/:
     post:
       tags:
@@ -102,13 +102,54 @@ paths:
           description: OK
           content:
             application/json:
-              schema: {  }
+              schema: { }
               examples:
                 Success:
                   summary: 'Create category success'
                   value: {
                     status: 201,
-                    data: { id: 123,
+                    data: {
+                      id: 123,
+                        name: test,
+                        category: {
+                          id: 123,
+                          name: test
+                        },
+                        sku: test,
+                        price: 123.12,
+                        quantity: 123
+                    }
+                  }
+  /product/{id}/edit/:
+    post:
+      tags:
+        - product
+      operationId: product_edit
+      parameters:
+        - name: id
+          in: path
+          description: 'product id'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditProductDto'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: { }
+              examples:
+                Success:
+                  summary: 'Edit product success'
+                  value: {
+                    status: 201,
+                    data: {
+                      id: 123,
                       name: test,
                       category: {
                         id: 123,
@@ -160,21 +201,31 @@ components:
         quantity:
           type: integer
       type: object
+    EditProductDto:
+      title: 'Edit product form'
+      properties:
+        name:
+          type: string
+        categoryId:
+          type: integer
+        sku:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+      type: object
   securitySchemes:
     bearerAuth:
       type: http
       bearerFormat: JWT
       scheme: bearer
 security:
-  -
-    bearerAuth: []
+  - bearerAuth: [ ]
 tags:
-  -
-    name: user
+  - name: user
     description: 'User methods'
-  -
-    name: category
+  - name: category
     description: 'Category methods'
-  -
-    name: product
+  - name: product
     description: 'Product methods'
