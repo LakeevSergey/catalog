@@ -48,7 +48,7 @@ paths:
   /category/create/:
     post:
       tags:
-        - user
+        - category
       operationId: category_create
       requestBody:
         content:
@@ -65,6 +65,28 @@ paths:
                 Success:
                   summary: 'Create category success'
                   value: { status: 201, data: { id: 123, name: test} }
+  /category/{id}/:
+    get:
+      tags:
+        - category
+      operationId: category_get
+      parameters:
+        - name: id
+          in: path
+          description: 'category id'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                Success:
+                  summary: 'Get category success'
+                  value: { status: 200, data: { id: 123, name: test} }
 components:
   schemas:
     LoginDto:
@@ -104,3 +126,6 @@ tags:
   -
     name: user
     description: 'User methods'
+  -
+    name: category
+    description: 'Category methods'

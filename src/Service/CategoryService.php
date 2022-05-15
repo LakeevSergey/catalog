@@ -22,4 +22,9 @@ class CategoryService
 
         return $category;
     }
+
+    public function get(int $id): Category
+    {
+        return $this->repository->find($id);
+    }
 }

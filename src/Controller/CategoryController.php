@@ -33,4 +33,13 @@ class CategoryController extends AbstractController
 
         return new JsonResponse($json, 201, [], true);
     }
+
+    #[Route('/{id}/', name: 'category_get', methods: 'GET')]
+    public function get(int $id)
+    {
+        $category = $this->categoryService->get($id);
+        $json = $this->serializer->serialize(['status' => 200, 'data' => $category], 'json');
+
+        return new JsonResponse($json, 200, [], true);
+    }
 }
