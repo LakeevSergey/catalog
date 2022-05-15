@@ -13,22 +13,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $login;
+    private string $login;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $password;
+    private string $password;
 
-    public function __construct(string $name, string $login, string $password)
+    public function __construct(string $name, string $login)
     {
         $this->name = $name;
         $this->login = $login;
-        $this->password = $password;
     }
 
     public function getId(): ?int
@@ -49,6 +48,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string
     {
         return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 
     public function getUserIdentifier(): string
