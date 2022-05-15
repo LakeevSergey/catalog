@@ -3,6 +3,27 @@ info:
   title: 'Catalog'
   version: '0.1'
 paths:
+  /user/login/:
+    post:
+      tags:
+        - user
+      operationId: user_login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                Success:
+                  summary: 'Login success'
+                  value: { status: 201, data: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NTIyMDgxMjYsImV4cCI6MTY1MjIxMTcyNiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJsb2dpbiI6ImFkbWluIn0.CJKBvnHLnovGSpZANpLwdb7kGl4NNPzR7cmfKzv-r7iNCCF2UOstcTTbLaVKe9MfPStk3kj7EClw7D4XGfxbZl58hNjB-DdKNv04s8PfGlEVlcRCAbvgss2Va0gF03fCHGoEvCfUgQqAdyUr1b0zII9ineTzSspbKxmbU2HTCVHgQGwUplVm3z39IZBNRpKGQe1ab1P_A140U4We8UfVid_pMQ3KilGg0VEF80gidzkvD23MgBdAB6O3RbE-w_styQneQRUPzOrNTjtd_42vZpTewwoUivFSboy1geOcDpxSfUYBdW0YZqXCsoVQbA9u_afJyacjSoIC0-0kZyVNVQ }
+      security: []
   /user/register/:
     post:
       tags:
@@ -26,6 +47,15 @@ paths:
       security: []
 components:
   schemas:
+    LoginDto:
+      title: 'Login form'
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+          format: password
+      type: object
     RegisterDto:
       title: 'Register form'
       properties:
