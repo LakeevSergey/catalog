@@ -109,7 +109,7 @@ paths:
                 Success:
                   summary: 'Get product success'
                   value: {
-                    status: 201,
+                    status: 200,
                     data: {
                       id: 123,
                       name: test,
@@ -121,6 +121,44 @@ paths:
                       price: 123.12,
                       quantity: 123
                     }
+                  }
+  /product/:
+    get:
+      tags:
+        - product
+      operationId: product_get_all
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { }
+              examples:
+                Success:
+                  summary: 'Get products success'
+                  value: {
+                    status: 200,
+                    data: [{
+                      id: 123,
+                      name: test,
+                      category: {
+                        id: 123,
+                        name: test
+                      },
+                      sku: test,
+                      price: 123.12,
+                      quantity: 123
+                    },{
+                      id: 124,
+                      name: test2,
+                      category: {
+                        id: 123,
+                        name: test
+                      },
+                      sku: test4,
+                      price: 123.45,
+                      quantity: 321
+                    }]
                   }
   /product/create/:
     post:

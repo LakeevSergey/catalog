@@ -54,4 +54,13 @@ class ProductController extends AbstractController
 
         return new JsonResponse($json, 200, [], true);
     }
+
+    #[Route('/', name: 'product_get_all', methods: 'GET')]
+    public function getAll()
+    {
+        $products = $this->productService->getAll();
+        $json = $this->serializer->serialize(['status' => 200, 'data' => $products], 'json');
+
+        return new JsonResponse($json, 200, [], true);
+    }
 }
