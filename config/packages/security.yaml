@@ -1,0 +1,26 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    providers:
+        users:
+            entity:
+                class: 'App\Entity\User'
+                property: 'login'
+    firewalls:
+        main:
+            jwt:
+                provider: users
+                authenticator: lexik_jwt_authentication.security.jwt_authenticator
+
+
+    access_control:
+
+when@test:
+    security:
+        password_hashers:
+
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
