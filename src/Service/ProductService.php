@@ -52,4 +52,9 @@ class ProductService
 
         return $product;
     }
+
+    public function get(int $id): Product
+    {
+        return $this->productRepository->find($id);
+    }
 }

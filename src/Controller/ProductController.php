@@ -45,4 +45,13 @@ class ProductController extends AbstractController
 
         return new JsonResponse($json, 201, [], true);
     }
+
+    #[Route('/{id}/', name: 'product_get', methods: 'GET')]
+    public function get(int $id): Response
+    {
+        $product = $this->productService->get($id);
+        $json = $this->serializer->serialize(['status' => 200, 'data' => $product], 'json');
+
+        return new JsonResponse($json, 200, [], true);
+    }
 }
