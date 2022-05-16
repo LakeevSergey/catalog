@@ -45,4 +45,13 @@ class CategoryController extends AbstractController
 
         return new JsonResponse($json, 200, [], true);
     }
+
+    #[Route('/', name: 'category_get_all', methods: 'GET')]
+    public function getAll(): Response
+    {
+        $categories = $this->categoryService->getAll();
+        $json = $this->serializer->serialize(['status' => 200, 'data' => $categories], 'json');
+
+        return new JsonResponse($json, 200, [], true);
+    }
 }

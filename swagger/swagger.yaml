@@ -46,6 +46,21 @@ paths:
                   value: { status: 201, data: { id: 123, name: test, login: test, email: test, roles: [ ROLE_USER ] } }
       security: [ ]
   /category/:
+    get:
+      tags:
+        - category
+      operationId: category_get_all
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { }
+              examples:
+                Success:
+                  summary: 'Get all categories success'
+                  value: { status: 200, data: [{ id: 123, name: test }] }
+      security: [ ]
     post:
       tags:
         - category
