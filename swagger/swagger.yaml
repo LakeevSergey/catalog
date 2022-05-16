@@ -258,6 +258,25 @@ paths:
                         quantity: 123
                     }
                   }
+  /product/total_value/:
+    get:
+      tags:
+        - product
+      operationId: product_total_value
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: { }
+              examples:
+                Success:
+                  summary: 'Get product total value success'
+                  value: {
+                    status: 200,
+                    data: 30757087104.00
+                  }
+      security: [ ]
 components:
   schemas:
     LoginDto:

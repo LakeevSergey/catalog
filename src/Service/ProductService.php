@@ -82,4 +82,9 @@ class ProductService
         $product = $this->get($id);
         $this->productRepository->remove($product, true);
     }
+
+    public function getTotalValue()
+    {
+        return $this->productRepository->getTotalValue();
+    }
 }

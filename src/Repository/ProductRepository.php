@@ -38,4 +38,12 @@ class ProductRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function getTotalValue()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('SUM(p.price * p.quantity)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
