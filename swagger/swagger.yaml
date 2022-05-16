@@ -45,7 +45,7 @@ paths:
                   summary: 'Registration success'
                   value: { status: 201, data: { id: 123, name: test, login: test, email: test, roles: [ ROLE_USER ] } }
       security: [ ]
-  /category/create/:
+  /category/:
     post:
       tags:
         - category
@@ -87,6 +87,7 @@ paths:
                 Success:
                   summary: 'Get category success'
                   value: { status: 200, data: { id: 123, name: test } }
+      security: [ ]
   /product/{id}/:
     get:
       tags:
@@ -110,6 +111,46 @@ paths:
                   summary: 'Get product success'
                   value: {
                     status: 200,
+                    data: {
+                      id: 123,
+                      name: test,
+                      category: {
+                        id: 123,
+                        name: test
+                      },
+                      sku: test,
+                      price: 123.12,
+                      quantity: 123
+                    }
+                  }
+      security: [ ]
+    post:
+      tags:
+        - product
+      operationId: product_edit
+      parameters:
+        - name: id
+          in: path
+          description: 'product id'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditProductDto'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: { }
+              examples:
+                Success:
+                  summary: 'Edit product success'
+                  value: {
+                    status: 201,
                     data: {
                       id: 123,
                       name: test,
@@ -184,7 +225,7 @@ paths:
                       quantity: 321
                     }]
                   }
-  /product/create/:
+      security: [ ]
     post:
       tags:
         - product
@@ -215,46 +256,6 @@ paths:
                         sku: test,
                         price: 123.12,
                         quantity: 123
-                    }
-                  }
-  /product/{id}/edit/:
-    post:
-      tags:
-        - product
-      operationId: product_edit
-      parameters:
-        - name: id
-          in: path
-          description: 'product id'
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditProductDto'
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema: { }
-              examples:
-                Success:
-                  summary: 'Edit product success'
-                  value: {
-                    status: 201,
-                    data: {
-                      id: 123,
-                      name: test,
-                      category: {
-                        id: 123,
-                        name: test
-                      },
-                      sku: test,
-                      price: 123.12,
-                      quantity: 123
                     }
                   }
 components:

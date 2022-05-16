@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Dto\CreateProductDto;
 use App\Entity\Dto\EditProductDto;
+use App\Entity\User;
 use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,9 +26,11 @@ class ProductController extends AbstractController
         $this->productService = $productService;
     }
 
-    #[Route('/create/', name: 'product_create', methods: 'POST')]
+    #[Route('/', name: 'product_create', methods: 'POST')]
     public function create(Request $request): Response
     {
+        $this->denyAccessUnlessGranted(User::ROLE_USER);
+
         $createProductDto = $this->serializer->deserialize($request->getContent(), CreateProductDto::class, JsonEncoder::FORMAT);
         $product = $this->productService->create($createProductDto);
         $json = $this->serializer->serialize(['status' => 201, 'data' => $product], 'json');
@@ -35,9 +38,11 @@ class ProductController extends AbstractController
         return new JsonResponse($json, 201, [], true);
     }
 
-    #[Route('/{id}/edit/', name: 'product_create', methods: 'POST')]
+    #[Route('/{id}/', name: 'product_edit', methods: 'POST')]
     public function edit(Request $request, int $id): Response
     {
+        $this->denyAccessUnlessGranted(User::ROLE_USER);
+
         $editProductDto = $this->serializer->deserialize($request->getContent(), EditProductDto::class, JsonEncoder::FORMAT);
         $editProductDto->setId($id);
         $product = $this->productService->edit($editProductDto);
@@ -67,6 +72,8 @@ class ProductController extends AbstractController
     #[Route('/{id}/', name: 'product_delete', methods: 'DELETE')]
     public function delete(int $id): Response
     {
+        $this->denyAccessUnlessGranted(User::ROLE_USER);
+
         $this->productService->delete($id);
         $json = $this->serializer->serialize(['status' => 202, 'data' => []], 'json');
 

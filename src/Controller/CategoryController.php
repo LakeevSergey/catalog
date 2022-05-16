@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Dto\CreateCategoryDto;
+use App\Entity\User;
 use App\Service\CategoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,9 +25,11 @@ class CategoryController extends AbstractController
         $this->categoryService = $categoryService;
     }
 
-    #[Route('/create/', name: 'category_create', methods: 'POST')]
+    #[Route('/', name: 'category_create', methods: 'POST')]
     public function create(Request $request): Response
     {
+        $this->denyAccessUnlessGranted(User::ROLE_USER);
+
         $createCategoryDto = $this->serializer->deserialize($request->getContent(), CreateCategoryDto::class, JsonEncoder::FORMAT);
         $category = $this->categoryService->create($createCategoryDto);
         $json = $this->serializer->serialize(['status' => 201, 'data' => $category], 'json');

@@ -35,17 +35,17 @@ class ProductService
         return $product;
     }
 
-    public function edit(EditProductDto $createProductDto): Product
+    public function edit(EditProductDto $editProductDto): Product
     {
-        $category = $this->categoryRepository->find($createProductDto->getCategoryId());
-        $product = $this->productRepository->find($createProductDto->getId());
+        $category = $this->categoryRepository->find($editProductDto->getCategoryId());
+        $product = $this->productRepository->find($editProductDto->getId());
 
         $product->edit(
-            $createProductDto->getName(),
+            $editProductDto->getName(),
             $category,
-            $createProductDto->getSku(),
-            $createProductDto->getPrice(),
-            $createProductDto->getQuantity()
+            $editProductDto->getSku(),
+            $editProductDto->getPrice(),
+            $editProductDto->getQuantity()
         );
 
         $this->productRepository->add($product, true);
