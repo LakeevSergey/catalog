@@ -56,11 +56,20 @@ class ProductController extends AbstractController
     }
 
     #[Route('/', name: 'product_get_all', methods: 'GET')]
-    public function getAll()
+    public function getAll(): Response
     {
         $products = $this->productService->getAll();
         $json = $this->serializer->serialize(['status' => 200, 'data' => $products], 'json');
 
         return new JsonResponse($json, 200, [], true);
+    }
+
+    #[Route('/{id}/', name: 'product_delete', methods: 'DELETE')]
+    public function delete(int $id): Response
+    {
+        $this->productService->delete($id);
+        $json = $this->serializer->serialize(['status' => 202, 'data' => []], 'json');
+
+        return new JsonResponse($json, 202, [], true);
     }
 }

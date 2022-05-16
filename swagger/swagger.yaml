@@ -122,6 +122,30 @@ paths:
                       quantity: 123
                     }
                   }
+    delete:
+      tags:
+        - product
+      operationId: product_delete
+      parameters:
+        - name: id
+          in: path
+          description: 'product id'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: OK
+          content:
+            application/json:
+              schema: { }
+              examples:
+                Success:
+                  summary: 'Delete product success'
+                  value: {
+                    status: 200,
+                    data: { }
+                  }
   /product/:
     get:
       tags:

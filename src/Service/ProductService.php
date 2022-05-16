@@ -62,4 +62,10 @@ class ProductService
     {
         return $this->productRepository->findAll();
     }
+
+    public function delete(int $id): void
+    {
+        $product = $this->get($id);
+        $this->productRepository->remove($product, true);
+    }
 }
