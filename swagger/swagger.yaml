@@ -199,7 +199,7 @@ paths:
                 Success:
                   summary: 'Delete product success'
                   value: {
-                    status: 200,
+                    status: 202,
                     data: { }
                   }
   /product/:
