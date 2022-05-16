@@ -23,13 +23,13 @@ class LoginService
 
     public function login(LoginDto $userLoginDto): string
     {
-        $user = $this->userRepository->findOneByLogin($userLoginDto->getLogin());
+        $user = $this->userRepository->findOneByLogin($userLoginDto->login);
 
         if (!$user) {
             throw new AccessDeniedHttpException("Incorrect login or password");
         }
 
-        $isPasswordValid = $this->passwordHasher->isPasswordValid($user, $userLoginDto->getPassword());
+        $isPasswordValid = $this->passwordHasher->isPasswordValid($user, $userLoginDto->password);
 
         if (!$isPasswordValid) {
             throw new AccessDeniedHttpException("Incorrect login or password");

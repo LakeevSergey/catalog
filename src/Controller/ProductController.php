@@ -44,7 +44,7 @@ class ProductController extends AbstractController
         $this->denyAccessUnlessGranted(User::ROLE_USER);
 
         $editProductDto = $this->serializer->deserialize($request->getContent(), EditProductDto::class, JsonEncoder::FORMAT);
-        $editProductDto->setId($id);
+        $editProductDto->id = $id;
         $product = $this->productService->edit($editProductDto);
         $json = $this->serializer->serialize(['status' => 201, 'data' => $product], 'json');
 

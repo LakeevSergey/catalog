@@ -2,17 +2,24 @@
 
 namespace App\Entity\Dto;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraint as AppAssert;
+
+#[AppAssert\UniqueEntityProperty(entity: 'App\Entity\Product', property: 'name')]
+#[AppAssert\UniqueEntityProperty(entity: 'App\Entity\Product', property: 'sku')]
 class CreateProductDto
 {
-    private string $name;
+    #[Assert\Length(min:3, max: 255)]
+    public string $name;
 
-    private int $categoryId;
+    public int $categoryId;
 
-    private string $sku;
+    #[Assert\Length(min:3, max: 255)]
+    public string $sku;
 
-    private float $price;
+    public float $price;
 
-    private int $quantity;
+    public int $quantity;
 
     public function __construct(string $name, int $categoryId, string $sku, float $price, int $quantity)
     {
@@ -21,30 +28,5 @@ class CreateProductDto
         $this->sku = $sku;
         $this->price = $price;
         $this->quantity = $quantity;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getCategoryId(): int
-    {
-        return $this->categoryId;
-    }
-
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-
-    public function getQuantity(): int
-    {
-        return $this->quantity;
-    }
-
-    public function getSku(): string
-    {
-        return $this->sku;
     }
 }

@@ -7,27 +7,36 @@ use App\Entity\Dto\EditProductDto;
 use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductService
 {
     private ProductRepository $productRepository;
     private CategoryRepository $categoryRepository;
+    private ValidatorInterface $validator;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, ValidatorInterface $validator)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->validator = $validator;
     }
 
     public function create(CreateProductDto $createProductDto): Product
     {
-        $category = $this->categoryRepository->find($createProductDto->getCategoryId());
+        $errors = $this->validator->validate($createProductDto);
+
+        if ($errors->count()) {
+            throw new ValidationFailedException($createProductDto, $errors);
+        }
+        $category = $this->categoryRepository->find($createProductDto->categoryId);
         $product = new Product(
-            $createProductDto->getName(),
+            $createProductDto->name,
             $category,
-            $createProductDto->getSku(),
-            $createProductDto->getPrice(),
-            $createProductDto->getQuantity()
+            $createProductDto->sku,
+            $createProductDto->price,
+            $createProductDto->quantity
         );
 
         $this->productRepository->add($product, true);
@@ -37,15 +46,20 @@ class ProductService
 
     public function edit(EditProductDto $editProductDto): Product
     {
-        $category = $this->categoryRepository->find($editProductDto->getCategoryId());
-        $product = $this->productRepository->find($editProductDto->getId());
+        $errors = $this->validator->validate($editProductDto);
+
+        if ($errors->count()) {
+            throw new ValidationFailedException($editProductDto, $errors);
+        }
+        $category = $this->categoryRepository->find($editProductDto->categoryId);
+        $product = $this->productRepository->find($editProductDto->id);
 
         $product->edit(
-            $editProductDto->getName(),
+            $editProductDto->name,
             $category,
-            $editProductDto->getSku(),
-            $editProductDto->getPrice(),
-            $editProductDto->getQuantity()
+            $editProductDto->sku,
+            $editProductDto->price,
+            $editProductDto->quantity
         );
 
         $this->productRepository->add($product, true);
