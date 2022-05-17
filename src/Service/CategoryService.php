@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Category;
 use App\Entity\Dto\CreateCategoryDto;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -26,6 +27,7 @@ class CategoryService
         if ($errors->count()) {
             throw new ValidationFailedException($createCategoryDto, $errors);
         }
+
         $category = new Category($createCategoryDto->name);
         $this->repository->add($category, true);
 
@@ -34,7 +36,13 @@ class CategoryService
 
     public function get(int $id): Category
     {
-        return $this->repository->find($id);
+        $category = $this->repository->find($id);
+
+        if (!$category) {
+            throw new EntityNotFoundException('Category not found');
+        }
+
+        return $category;
     }
 
     public function getAll(): array

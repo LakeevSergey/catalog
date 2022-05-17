@@ -6,10 +6,12 @@ use App\Entity\Dto\CreateProductDto;
 use App\Entity\Dto\EditProductDto;
 use App\Entity\User;
 use App\Service\ProductService;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -45,7 +47,13 @@ class ProductController extends AbstractController
 
         $editProductDto = $this->serializer->deserialize($request->getContent(), EditProductDto::class, JsonEncoder::FORMAT);
         $editProductDto->id = $id;
-        $product = $this->productService->edit($editProductDto);
+
+        try {
+            $product = $this->productService->edit($editProductDto);
+        } catch (EntityNotFoundException $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
+        }
+
         $json = $this->serializer->serialize(['status' => 201, 'data' => $product], 'json');
 
         return new JsonResponse($json, 201, [], true);
@@ -63,7 +71,12 @@ class ProductController extends AbstractController
     #[Route('/{id}/', name: 'product_get', methods: 'GET')]
     public function get(int $id): Response
     {
-        $product = $this->productService->get($id);
+        try {
+            $product = $this->productService->get($id);
+        } catch (EntityNotFoundException $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
+        }
+
         $json = $this->serializer->serialize(['status' => 200, 'data' => $product], 'json');
 
         return new JsonResponse($json, 200, [], true);
@@ -83,7 +96,12 @@ class ProductController extends AbstractController
     {
         $this->denyAccessUnlessGranted(User::ROLE_USER);
 
-        $this->productService->delete($id);
+        try {
+            $this->productService->delete($id);
+        } catch (EntityNotFoundException $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
+        }
+
         $json = $this->serializer->serialize(['status' => 202, 'data' => []], 'json');
 
         return new JsonResponse($json, 202, [], true);

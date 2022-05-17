@@ -7,6 +7,7 @@ use App\Entity\Dto\EditProductDto;
 use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,6 +24,10 @@ class ProductService
         $this->validator = $validator;
     }
 
+    /**
+     * @param CreateProductDto $createProductDto
+     * @return Product
+     */
     public function create(CreateProductDto $createProductDto): Product
     {
         $errors = $this->validator->validate($createProductDto);
@@ -44,6 +49,11 @@ class ProductService
         return $product;
     }
 
+    /**
+     * @param EditProductDto $editProductDto
+     * @return Product
+     * @throws EntityNotFoundException
+     */
     public function edit(EditProductDto $editProductDto): Product
     {
         $errors = $this->validator->validate($editProductDto);
@@ -52,7 +62,7 @@ class ProductService
             throw new ValidationFailedException($editProductDto, $errors);
         }
         $category = $this->categoryRepository->find($editProductDto->categoryId);
-        $product = $this->productRepository->find($editProductDto->id);
+        $product = $this->get($editProductDto->id);
 
         $product->edit(
             $editProductDto->name,
@@ -67,23 +77,43 @@ class ProductService
         return $product;
     }
 
+    /**
+     * @param int $id
+     * @return Product
+     * @throws EntityNotFoundException
+     */
     public function get(int $id): Product
     {
-        return $this->productRepository->find($id);
+        $product = $this->productRepository->find($id);
+        if (!$product) {
+            throw new EntityNotFoundException('Product not found');
+        }
+        return $product;
     }
 
+    /**
+     * @return Product[]
+     */
     public function getAll(): array
     {
         return $this->productRepository->findAll();
     }
 
+    /**
+     * @param int $id Product id
+     * @return void
+     * @throws EntityNotFoundException
+     */
     public function delete(int $id): void
     {
         $product = $this->get($id);
         $this->productRepository->remove($product, true);
     }
 
-    public function getTotalValue()
+    /**
+     * @return float
+     */
+    public function getTotalValue(): float
     {
         return $this->productRepository->getTotalValue();
     }

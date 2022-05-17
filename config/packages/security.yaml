@@ -8,6 +8,7 @@ security:
                 property: 'login'
     firewalls:
         main:
+            stateless:  true
             jwt:
                 provider: users
                 authenticator: lexik_jwt_authentication.security.jwt_authenticator

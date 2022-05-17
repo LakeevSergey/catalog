@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Dto\CreateCategoryDto;
 use App\Entity\User;
 use App\Service\CategoryService;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -40,7 +42,12 @@ class CategoryController extends AbstractController
     #[Route('/{id}/', name: 'category_get', methods: 'GET')]
     public function get(int $id): Response
     {
-        $category = $this->categoryService->get($id);
+        try {
+            $category = $this->categoryService->get($id);
+        } catch (EntityNotFoundException $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
+        }
+
         $json = $this->serializer->serialize(['status' => 200, 'data' => $category], 'json');
 
         return new JsonResponse($json, 200, [], true);
