@@ -15,7 +15,7 @@ class EntityExists extends Constraint
 
     public string $property = 'id';
 
-    public ?object $entity;
+    public string $entity;
 
     /**
      * @param string $entity

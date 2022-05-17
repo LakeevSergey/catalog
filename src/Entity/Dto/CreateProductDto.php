@@ -12,13 +12,16 @@ class CreateProductDto
     #[Assert\Length(min:3, max: 255)]
     public string $name;
 
+    #[AppAssert\EntityExists('App\Entity\Category')]
     public int $categoryId;
 
     #[Assert\Length(min:3, max: 255)]
     public string $sku;
 
+    #[Assert\PositiveOrZero]
     public float $price;
 
+    #[Assert\PositiveOrZero]
     public int $quantity;
 
     public function __construct(string $name, int $categoryId, string $sku, float $price, int $quantity)

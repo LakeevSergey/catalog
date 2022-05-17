@@ -33,7 +33,7 @@ class UniqueEntityProperty extends Constraint
         string  $property,
         ?string $entityProperty = null,
         ?string $primaryKey = null,
-        string  $message = 'Entity "{{ entity }}" with property "{{ property }}": "{{ value }}" exists'
+        string  $message = 'Entity "{{ entity }}" with property "{{ entityProperty  }}": "{{ value }}" exists'
     )
     {
         if (is_null($entityProperty)) {

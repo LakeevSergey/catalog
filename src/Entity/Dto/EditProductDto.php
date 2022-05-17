@@ -14,6 +14,7 @@ class EditProductDto
     #[Assert\Length(min:3, max: 255)]
     public string $name;
 
+    #[AppAssert\EntityExists('App\Entity\Category')]
     public int $categoryId;
 
     #[Assert\Length(min:3, max: 255)]

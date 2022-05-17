@@ -30,16 +30,16 @@ class UniqueEntityPropertyValidator extends ConstraintValidator
 
         $criteria = new Criteria();
         // search for entity with same property value
-        $criteria->where(Criteria::expr()->neq($constraint->entityProperty, $value->{$constraint->property}));
+        $criteria->where(Criteria::expr()->eq($constraint->entityProperty, $value->{$constraint->property}));
 
         if (!is_null($constraint->primaryKey)) {
             // exclude entities with same primary key value
             $criteria->andWhere(Criteria::expr()->neq($constraint->primaryKey, $value->{$constraint->primaryKey}));
         }
 
-        $data = $this->entityManager->getRepository($constraint->entity)->matching($criteria);
+        $count = $this->entityManager->getRepository($constraint->entity)->matching($criteria)->count();
 
-        if (null !== $data) {
+        if ($count > 0) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ entity }}', $constraint->entity)
                 ->setParameter('{{ entityProperty }}', $constraint->entityProperty)
