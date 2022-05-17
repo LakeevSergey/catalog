@@ -3,6 +3,8 @@
 Clone project and run
 
 ``` bash
+# create .env file
+cp .env.dist .env
 
 # run docker images
 docker-compose up -d
