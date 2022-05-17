@@ -30,7 +30,7 @@ class EntityExistsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, EntityExists::class);
         }
 
-        $data = $this->entityManager->getRepository($constraint->entityClass)->findOneBy([
+        $data = $this->entityManager->getRepository($constraint->entity)->findOneBy([
             $constraint->property => $value,
         ]);
 

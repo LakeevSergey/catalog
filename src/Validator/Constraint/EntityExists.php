@@ -3,8 +3,11 @@
 namespace App\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\MissingOptionsException;
 
+/**
+ * Checks for the existence of an entity with the same property value, usually a primary key. False if it doesn't find anything.
+ * Required for creating/editing entities with foreign keys.
+ */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class EntityExists extends Constraint
 {
@@ -15,15 +18,14 @@ class EntityExists extends Constraint
     public ?object $entity;
 
     /**
-     * EntityExists constructor.
-     * @param null $options
+     * @param string $entity
+     * @param string $property
      */
-    public function __construct($options = null)
+    public function __construct(string $entity, string $property = 'id')
     {
-        parent::__construct($options);
-
-        if (null === $this->entity) {
-            throw new MissingOptionsException(sprintf('Option "entity" must be given for constraint %s', __CLASS__), ['entity']);
-        }
+        parent::__construct([
+            'entity' => $entity,
+            'property' => $property
+        ]);
     }
 }

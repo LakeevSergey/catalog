@@ -19,8 +19,10 @@ class EditProductDto
     #[Assert\Length(min:3, max: 255)]
     public string $sku;
 
+    #[Assert\PositiveOrZero]
     public float $price;
 
+    #[Assert\PositiveOrZero]
     public int $quantity;
 
     public function __construct(string $name, int $categoryId, string $sku, float $price, int $quantity)

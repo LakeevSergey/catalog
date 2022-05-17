@@ -29,9 +29,11 @@ class UniqueEntityPropertyValidator extends ConstraintValidator
         }
 
         $criteria = new Criteria();
+        // search for entity with same property value
         $criteria->where(Criteria::expr()->neq($constraint->entityProperty, $value->{$constraint->property}));
 
         if (!is_null($constraint->primaryKey)) {
+            // exclude entities with same primary key value
             $criteria->andWhere(Criteria::expr()->neq($constraint->primaryKey, $value->{$constraint->primaryKey}));
         }
 
